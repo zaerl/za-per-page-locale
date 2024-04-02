@@ -28,6 +28,7 @@ function za_ppl_meta_box_callback( $post ) {
 	$en_us     = array( 'en_US' => array( 'english_name' => 'English (United States)' ) );
 	$languages = array_merge( $en_us, wp_get_available_translations() );
 
+	wp_nonce_field( 'za_ppl_save_post', 'za_ppl_nonce' );
 	echo '<select name="za_ppl_locale">';
 
 	foreach ( $languages as $code => $language ) {
@@ -52,6 +53,14 @@ add_action( 'add_meta_boxes', 'za_ppl_add_meta_box' );
  * @param int $post_id The post ID
  */
 function za_ppl_save_post( $post_id ) {
+	if ( ! isset( $_POST['za_ppl_nonce'] ) || ! wp_verify_nonce( $_POST['za_ppl_nonce'], 'za_ppl_save_post' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
 	if ( array_key_exists( 'za_ppl_locale', $_POST ) ) {
 		update_post_meta( $post_id, 'za_ppl_locale', $_POST['za_ppl_locale'] );
 	}
