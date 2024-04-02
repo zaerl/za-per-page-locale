@@ -52,8 +52,8 @@ add_action( 'add_meta_boxes', 'za_ppl_add_meta_box' );
  * @param int $post_id The post ID
  */
 function za_ppl_save_post( $post_id ) {
-	if ( array_key_exists( 'za_locale', $_POST ) ) {
-		update_post_meta( $post_id, 'za_ppl_locale', $_POST['za_locale'] );
+	if ( array_key_exists( 'za_ppl_locale', $_POST ) ) {
+		update_post_meta( $post_id, 'za_ppl_locale', $_POST['za_ppl_locale'] );
 	}
 }
 
